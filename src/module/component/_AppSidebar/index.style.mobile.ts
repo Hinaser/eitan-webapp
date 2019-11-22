@@ -1,0 +1,45 @@
+import {AppTheme} from "../../../style/theme/type";
+
+export default (theme: AppTheme) => ({
+  root: {
+    ...(theme.customComponents.appSidebar || {}),
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    height: "100vh",
+    boxSizing: "border-box" as const,
+    paddingBottom: 32,
+    fontSize: ".9rem",
+    zIndex: 2,
+    transition: "all ease .3s, height 0s, top 0s, bottom 0s",
+    boxShadow: "none",
+  },
+  clickListener: {
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: theme.customProps.dialogClickListenerBackgroundColor,
+    zIndex: 2,
+    transition: "all .3s ease",
+  },
+  container: {
+    height: "100%",
+    zIndex: 3,
+  },
+  toggleButtonContainer: {
+    position: "absolute" as const,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 32,
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "rgba(0,0,0,.07)",
+    fontSize: "1rem",
+    overflow: "hidden",
+  },
+});
