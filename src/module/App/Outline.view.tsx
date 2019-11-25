@@ -1,8 +1,10 @@
 import * as React from "react";
 import Scrollbars from "react-custom-scrollbars";
+import {MdClose as CloseIcon} from "react-icons/md";
 import {Sidebar} from "../outline.config";
 import {IViewProps} from "./Outline.type";
 import AppLoader from "../component/_Loader/AppLoader";
+import {closeApp} from "../../index.lib";
 
 
 export default function OutlineView(props: IViewProps){
@@ -36,6 +38,9 @@ export default function OutlineView(props: IViewProps){
         </Scrollbars>
       </main>
       <AppLoader isLoading={isLoading} />
+      <div className={classes.closeButton} onClick={closeApp}>
+        <CloseIcon />
+      </div>
     </div>
   );
 }

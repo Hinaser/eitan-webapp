@@ -18,21 +18,25 @@ const getMainContentPosition = memoizeOne((
   headerHeight: number,
   sidebarWidth: number,
   sidebarPosition: "left"|"right",
+  windowWidth: number,
 ) => {
-  if(sidebarPosition === "right"){
-    return {
-      top: headerHeight + mainContentPadding,
-      left: mainContentPadding,
-      bottom: mainContentPadding,
-      right: sidebarWidth + mainContentPadding,
-    };
+  const top = headerHeight + mainContentPadding;
+  const bottom = mainContentPadding;
+  
+  let left = sidebarPosition === "left" ? sidebarWidth + mainContentPadding : mainContentPadding;
+  let right = sidebarPosition === "left" ? mainContentPadding : sidebarWidth + mainContentPadding;
+  
+  const contentWidth = windowWidth - left - right;
+  if(contentWidth > 1000){
+    left = (windowWidth - sidebarWidth - 1000) / 2 + (sidebarPosition === "left" ? sidebarWidth : 0);
+    right = (windowWidth - sidebarWidth - 1000) / 2 + (sidebarPosition === "left" ? 0 : sidebarWidth);
   }
   
   return {
-    top: headerHeight + mainContentPadding,
-    left: sidebarWidth + mainContentPadding,
-    bottom: mainContentPadding,
-    right: mainContentPadding,
+    top,
+    bottom,
+    left,
+    right,
   };
 });
 
@@ -124,7 +128,7 @@ class OutlineContainer extends React.PureComponent<IContainerProps, IContainerSt
       scrollAPI: this.scrollRef.current,
     })(childrenWithSize);
     
-    const mainContentPosition = getMainContentPosition(headerHeight, sidebarWidth, sidebarPosition);
+    const mainContentPosition = getMainContentPosition(headerHeight, sidebarWidth, sidebarPosition, windowWidth);
     const scrollbarStyle = getScrollbarStyle(
       contentWidth - mainContentPadding*2, 
       contentHeight - mainContentPadding*2,

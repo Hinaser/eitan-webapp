@@ -6,7 +6,7 @@ export function getInitialState(): AppState {
     lang: "ja",
     theme: "default",
     isLoadingApp: false,
-    isSidebarOpen: true,
+    isSidebarOpen: false,
     sidebarPosition: "left",
   };
 }
