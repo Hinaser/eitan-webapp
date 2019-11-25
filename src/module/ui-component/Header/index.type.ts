@@ -9,8 +9,10 @@ export interface IContainerState {
 }
 
 export interface IViewProps extends WithStyleAndI18nProps<ClassKeys>, IContainerState {
+  wordList: TWord[];
 }
 
 export interface IContainerProps extends WithStyleAndI18nProps<ClassKeys> {
+  wordList: TWord[];
   view: React.ComponentType<IViewProps>;
 }

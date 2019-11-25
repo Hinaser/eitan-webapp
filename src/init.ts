@@ -4,6 +4,9 @@ import thunkMiddleware from "redux-thunk";
 import {applyMiddleware, createStore, Middleware, Store} from "redux";
 import {createLogger} from "redux-logger";
 import {composeWithDevTools} from "redux-devtools-extension";
+import {EowpActions} from "./state/store/Eowp/reducer";
+import {LOAD_DATA} from "./state/store/Eowp/action/index.type";
+import {loadEowpData} from "./state/store/Eowp/action/index.lib";
 
 // Place redux store here for reference accessed from pre/post rendering functions.
 let _store: Store;
@@ -34,12 +37,21 @@ export async function doPostRenderingTasks(){
   if(!_store){
     throw new Error("Redux store has not been initialized!");
   }
+  
+  // Load eowp data
+  const eowpData = await loadEowpData();
+  _store.dispatch<EowpActions>({
+    type: LOAD_DATA,
+    payload: {
+      data: eowpData,
+    },
+  });
 }
 
 /**
  * Initialize and configure redux store here.
  */
-export const initializeStore = () => {
+export const initializeStore = async () => {
   const middlewares = [thunkMiddleware] as Middleware[];
   
   if (process.env.NODE_ENV === "development") {
@@ -52,7 +64,7 @@ export const initializeStore = () => {
   }
   
   // Override initialState if told to do so.
-  const initialState = detectInitialState();
+  const initialState = await detectInitialState();
   
   const store = createStore(
     rootReducer,

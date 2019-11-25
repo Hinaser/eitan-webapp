@@ -8,6 +8,32 @@ export type TWord = {
   wordMeans: TWordMean[];
 };
 
+export type TQuestion = TWord & {
+  choices: TWordMean[];
+};
+
+export type TAnswer = {
+  answer: number[];
+};
+
+export type TExam = {
+  qa: Array<TQuestion & TAnswer>;
+};
+
+export type TExamResult = {
+  overall: number;
+  score: number;
+  date: number;
+  exam: TExam;
+};
+
+export type TQATrend = {
+  [word: string]: Array<{
+    ymd: number;
+    result: number; // 0: failure, 1: passed
+  }>;
+};
+
 export function generateWordList(){
   const allRows = document.querySelectorAll("#wordlist > tbody > tr:not(:first-child)");
   
@@ -71,13 +97,13 @@ export function shuffleArray<T>(array: T[]): T[] {
   return workingArray;
 }
 
-export function generateQuestionList(wordList: TWord[]){
+export function generateQuestionList(wordList: TWord[], nChoices: number = 5): TQuestion[] {
   const randomizedWordList = shuffleArray(wordList);
   let allAnswers = gatherAllWordMeans(randomizedWordList);
   
   return randomizedWordList.map(wl => {
     allAnswers = shuffleArray(allAnswers);
-    const choices = allAnswers.slice(0, 4);
+    const choices = allAnswers.slice(0, nChoices+1);
     const correctAnswer = wl.wordMeans[Math.floor(Math.random()*wl.wordMeans.length)];
     choices.push(correctAnswer);
     return {
@@ -101,20 +127,49 @@ export function gatherAndStoreWordList(){
   return wl;
 }
 
-export function loadWordListFromLocalStorage(): TWord[] {
-  try{
-    return JSON.parse(localStorage.getItem("wordList") as string);
-  }
-  catch(e){
-    return [];
-  }
-}
-
-export function* questionGenerator(){
-  const wl = loadWordListFromLocalStorage();
-  const ql = generateQuestionList(wl);
-  for(let i=0;i<ql.length;i++){
-    const q = ql[i];
-    yield q;
-  }
+export async function loadEowpDataFromLocalStorage(){
+  const wordList = (()=>{
+    try{
+      return JSON.parse(localStorage.getItem("wordList") as string) || [] as TWord[];
+    }
+    catch(e){
+      return [] as TWord[];
+    }
+  })();
+  
+  const examHistory = (()=>{
+    try{
+      return JSON.parse(localStorage.getItem("examHistory") as string) || [] as TExam[];
+    }
+    catch(e){
+      return [] as TExam[];
+    }
+  })();
+  
+  const resultHistory = (()=>{
+    try{
+      return JSON.parse(localStorage.getItem("resultHistory") as string) || [] as TExamResult[];
+    }
+    catch(e){
+      return [] as TExamResult[];
+    }
+  })();
+  
+  const qaTrend = (()=>{
+    try{
+      return JSON.parse(localStorage.getItem("qaTrend") as string) || [] as TQATrend[];
+    }
+    catch(e){
+      return [] as TQATrend[];
+    }
+  })();
+  
+  return {
+    version: 0,
+    loading: false,
+    wordList,
+    examHistory,
+    resultHistory,
+    qaTrend,
+  };
 }

@@ -1,11 +1,26 @@
 import {CreateThemeType} from "./type";
 
 export const createTheme: CreateThemeType = () => {
+  const primaryForegroundColor = "#dcdcdc";
+  const secondaryForegroundColor = "#999";
+  const primaryBackgroundColor = "rgba(33,33,33,.7)";
+  const secondaryBackgroundColor = "rgba(33,33,33,.2)";
+  const selectedBorderColor = "rgba(220,220,220,1)";
+  const errorForegroundColor = "rgba(255,110,20,1)";
+  const successForegroundColor = "rgba(0,255,80,.9)";
+  const buttonBackgroundColor = "#18202c";
+  
   return {
     customProps: {
-      primaryForegroundColor: "#eee",
-      primaryBackgroundColor: "rgba(33,33,33,.7)",
-      dialogClickListenerBackgroundColor: "rgba(200,200,200,.5)",
+      primaryForegroundColor,
+      secondaryForegroundColor,
+      primaryBackgroundColor,
+      secondaryBackgroundColor,
+      dialogClickListenerBackgroundColor: "rgba(0,0,0,.6)",
+      selectedBorderColor,
+      successForegroundColor,
+      errorForegroundColor,
+      buttonBackgroundColor,
     },
     customComponents: {
       appLoader: {

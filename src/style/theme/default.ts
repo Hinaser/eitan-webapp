@@ -1,11 +1,26 @@
 import {CreateThemeType} from "./type";
 
 export const createTheme: CreateThemeType = () => {
+  const primaryForegroundColor = "rgba(0,0,0,.87)";
+  const secondaryForegroundColor = "rgba(100,100,100,.8)";
+  const primaryBackgroundColor = "#eee";
+  const secondaryBackgroundColor = "rgba(245,245,245,1)";
+  const selectedBorderColor = "rgba(220,220,220,1)";
+  const errorForegroundColor = "red";
+  const successForegroundColor = "green";
+  const buttonBackgroundColor = "rgb(224,225,226)";
+  
   return {
     customProps: {
-      primaryForegroundColor: "rgba(33,33,33,.7)",
-      primaryBackgroundColor: "#eee",
+      primaryForegroundColor,
+      secondaryForegroundColor,
+      primaryBackgroundColor,
+      secondaryBackgroundColor,
       dialogClickListenerBackgroundColor: "rgba(0,0,0,.5)",
+      selectedBorderColor,
+      successForegroundColor,
+      errorForegroundColor,
+      buttonBackgroundColor,
     },
     customComponents: {
       appLoader: {
@@ -20,13 +35,13 @@ export const createTheme: CreateThemeType = () => {
       },
       appHeader: {
         background: "#fefefe",
-        zIndex: -1,
+        zIndex: 1,
         boxShadow: "3px 3px 8px rgba(33,33,33,.2)",
         transition: "all ease .3s, width 0s, top 0s, right 0s, left 0s, bottom 0s",
       },
       appSidebar: {
         background: "#fefefe",
-        zIndex: 1,
+        zIndex: -1,
         boxShadow: "3px 3px 8px rgba(33,33,33,.2)",
         transition: "all ease .3s, height 0s, top 0s, right 0s, left 0s, bottom 0s",
       },

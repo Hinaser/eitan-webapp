@@ -52,7 +52,7 @@ async function main(){
     whyDidYouRender(React, {include: [/.*View$/]});
   }
   
-  const {store} = initializeStore();
+  const {store} = await initializeStore();
   
   if(process.env.REACT_APP_ENV === "development"){
     const start = Date.now();
