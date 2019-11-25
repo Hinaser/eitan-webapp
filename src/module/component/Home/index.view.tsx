@@ -9,13 +9,13 @@ import {IViewProps} from "./index.type";
 import Header from "../../ui-component/Header";
 
 export default function HomeView(props: IViewProps){
-  const {classes} = props;
+  const {classes, onClickMenu} = props;
   
   return (
     <div className={classes.root}>
       <Header />
       <div className={classes.menuContainer}>
-        <div className={classes.menu}>
+        <div className={classes.menu} onClick={onClickMenu} data-menu="exam">
           <div className={classes.menuImage}>
             <LaunchIcon />
           </div>
@@ -24,7 +24,7 @@ export default function HomeView(props: IViewProps){
           </div>
         </div>
   
-        <div className={classes.menu}>
+        <div className={classes.menu} onClick={onClickMenu} data-menu="wordList">
           <div className={classes.menuImage}>
             <ListIcon />
           </div>
@@ -33,7 +33,7 @@ export default function HomeView(props: IViewProps){
           </div>
         </div>
   
-        <div className={classes.menu}>
+        <div className={classes.menu} onClick={onClickMenu} data-menu="stats">
           <div className={classes.menuImage}>
             <ChartIcon />
           </div>
@@ -42,7 +42,7 @@ export default function HomeView(props: IViewProps){
           </div>
         </div>
   
-        <div className={classes.menu}>
+        <div className={classes.menu} onClick={onClickMenu} data-menu="config">
           <div className={classes.menuImage}>
             <ConfigIcon />
           </div>

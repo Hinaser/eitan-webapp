@@ -13,7 +13,7 @@ export type TQuestion = TWord & {
 };
 
 export type TAnswer = {
-  answer: number[];
+  answer: number[]|null;
 };
 
 export type TExam = {
@@ -103,7 +103,7 @@ export function generateQuestionList(wordList: TWord[], nChoices: number = 5): T
   
   return randomizedWordList.map(wl => {
     allAnswers = shuffleArray(allAnswers);
-    const choices = allAnswers.slice(0, nChoices+1);
+    const choices = allAnswers.slice(0, nChoices-1);
     const correctAnswer = wl.wordMeans[Math.floor(Math.random()*wl.wordMeans.length)];
     choices.push(correctAnswer);
     return {
