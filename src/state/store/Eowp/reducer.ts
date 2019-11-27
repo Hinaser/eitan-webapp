@@ -18,7 +18,14 @@ const eowpReducer: R = (state = getInitialState(), action) => {
       };
     }
     case LOAD_DATA: {
-      const {data} = action.payload;
+      const data = {...action.payload.data};
+      
+      Object.keys(data).forEach(k => {
+        if(typeof data[k as keyof EowpState] === "undefined"){
+          delete data[k as keyof EowpState];
+        }
+      });
+      
       return {
         ...state,
         ...data,

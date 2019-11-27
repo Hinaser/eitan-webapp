@@ -10,4 +10,6 @@ export type EowpState = {
   examHistory: TExam[];
   resultHistory: TExamResult[];
   qaTrend: TQATrend[];
+  nQuestionsInExam: number;
+  nChoices: number,
 };

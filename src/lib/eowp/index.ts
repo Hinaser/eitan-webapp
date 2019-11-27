@@ -97,13 +97,22 @@ export function shuffleArray<T>(array: T[]): T[] {
   return workingArray;
 }
 
-export function generateQuestionList(wordList: TWord[], nChoices: number = 5): TQuestion[] {
+export function generateQuestionList(wordList: TWord[], nChoices: number, nQuestions: number): TQuestion[] {
   const randomizedWordList = shuffleArray(wordList);
   let allAnswers = gatherAllWordMeans(randomizedWordList);
   
-  return randomizedWordList.map(wl => {
+  return randomizedWordList.slice(0, nQuestions).map(wl => {
     allAnswers = shuffleArray(allAnswers);
-    const choices = allAnswers.slice(0, nChoices-1);
+    
+    let i = 0;
+    const choices: TWordMean[] = [];
+    while(choices.length < nChoices-1 && i < allAnswers.length){
+      const answerCandidate = allAnswers[i];
+      if(!wl.wordMeans.some(m => m.mean === answerCandidate.mean)){
+        choices.push(answerCandidate);
+      }
+      i++;
+    }
     const correctAnswer = wl.wordMeans[Math.floor(Math.random()*wl.wordMeans.length)];
     choices.push(correctAnswer);
     return {
@@ -133,7 +142,7 @@ export async function loadEowpDataFromLocalStorage(){
       return JSON.parse(localStorage.getItem("wordList") as string) || [] as TWord[];
     }
     catch(e){
-      return [] as TWord[];
+      return undefined;
     }
   })();
   
@@ -142,7 +151,7 @@ export async function loadEowpDataFromLocalStorage(){
       return JSON.parse(localStorage.getItem("examHistory") as string) || [] as TExam[];
     }
     catch(e){
-      return [] as TExam[];
+      return undefined;
     }
   })();
   
@@ -151,7 +160,7 @@ export async function loadEowpDataFromLocalStorage(){
       return JSON.parse(localStorage.getItem("resultHistory") as string) || [] as TExamResult[];
     }
     catch(e){
-      return [] as TExamResult[];
+      return undefined;
     }
   })();
   
@@ -160,7 +169,27 @@ export async function loadEowpDataFromLocalStorage(){
       return JSON.parse(localStorage.getItem("qaTrend") as string) || [] as TQATrend[];
     }
     catch(e){
-      return [] as TQATrend[];
+      return undefined;
+    }
+  })();
+  
+  const nChoices = (()=>{
+    try{
+      const rt = JSON.parse(localStorage.getItem("nChoices") as string);
+      return typeof rt === "number" ? rt : undefined;
+    }
+    catch(e){
+      return undefined;
+    }
+  })();
+  
+  const nQuestionsInExam = (()=>{
+    try{
+      const rt = JSON.parse(localStorage.getItem("nQuestionsInExam") as string);
+      return typeof rt === "number" ? rt : undefined;
+    }
+    catch(e){
+      return undefined;
     }
   })();
   
@@ -171,5 +200,7 @@ export async function loadEowpDataFromLocalStorage(){
     examHistory,
     resultHistory,
     qaTrend,
+    nChoices,
+    nQuestionsInExam,
   };
 }

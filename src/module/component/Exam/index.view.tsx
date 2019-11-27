@@ -1,9 +1,16 @@
 import * as React from "react";
 import Scrollbars from "react-custom-scrollbars";
 import classNames from "classnames";
-import {MdCheck as CheckIcon} from "react-icons/md";
-import {IViewProps} from "./index.type";
+import {
+  MdCheck as CheckIcon,
+  MdSend as NextIcon,
+  MdRadioButtonUnchecked as CorrectIcon,
+  MdClear as NoIcon,
+  MdCheck as CompleteIcon,
+} from "react-icons/md";
 import {GiBookshelf as HeaderIcon} from "react-icons/all";
+import {IViewProps} from "./index.type";
+import {checkAnswer} from "./index.lib";
 
 export default function ExamView(props: IViewProps){
   const {
@@ -12,17 +19,20 @@ export default function ExamView(props: IViewProps){
     styleForQuestionContainer,
     qaList,
     currentQa,
-    selectedAnswerIndexes,
     onClickAnswer,
     onClickNext,
-    onClickPrevious,
     onClickQuestion,
-    onClickComplete,
     onClickToHome,
+    onClickComplete,
     readList,
+    answerResult,
   } = props;
   
   const qa = qaList[currentQa !== null ? currentQa : 0];
+  const answers = qaList.map(q => checkAnswer(q, q.answer));
+  const nAnswered = answers.filter(a => a !== null).length;
+  const nCorrect = answers.filter(a => a === "correct").length;
+  const nNo = answers.filter(a => a === "no").length;
   
   return (
     <div className={classes.root}>
@@ -31,10 +41,19 @@ export default function ExamView(props: IViewProps){
           <HeaderIcon />
         </div>
         <div className={classes.titleContainer}>
-          <div className={classes.title}>英単語テストアプリ</div>
+          <div className={classes.title}>英単語復習アプリ</div>
           <div className={classes.version}>v0.0.1</div>
         </div>
-        <div className={classes.storedWordsContainer}>
+        <div className={classes.examSummaryContainer}>
+          <div>
+            全 {qaList.length}問
+          </div>
+          <div>
+            正 {nCorrect} 誤 {nNo}
+          </div>
+          <div>
+            正答率 {nAnswered > 0 ? Math.round(nCorrect / nAnswered * 1000)/10 : "-"}%
+          </div>
         </div>
         <div className={classes.backToHome}>
           <div onClick={onClickToHome}>
@@ -49,13 +68,16 @@ export default function ExamView(props: IViewProps){
           >
             <div className={classes.qaListContainer}>
               {qaList.map((qa, i) => {
+                const answerResult = checkAnswer(qa, qa.answer);
                 return (
                   <div
                     className={classNames(classes.qi, i === currentQa && "selected")}
                     key={qa.word}
                     onClick={onClickQuestion}
                     data-index={i}
+                    data-result={answerResult || ""}
                   >
+                    {answerResult === "correct" ? <CorrectIcon /> : (answerResult === "no" ? <NoIcon /> : null)}
                     {(i === currentQa || readList.includes(i)) ? qa.word : "???"}
                   </div>
                 );
@@ -73,7 +95,7 @@ export default function ExamView(props: IViewProps){
                 {qa && qa.word}
               </div>
               <div className={classes.statement}>
-                この単語の意味を下記の選択肢より選びなさい。(複数選択可)
+                この単語の意味を下記より1つ選びなさい。
               </div>
               <div className={classes.choiceContainer}>
                 {qa && (
@@ -85,12 +107,13 @@ export default function ExamView(props: IViewProps){
                           key={`${qa.word}-${c.mean}-${i}`}
                           onClick={onClickAnswer}
                           data-index={i}
+                          className={classNames(answerResult !== null && "answered")}
                         >
                           <td
                             className={classes.check}
                           >
                             <div
-                              className={classNames(selectedAnswerIndexes && selectedAnswerIndexes.includes(i) && "checked")}
+                              className={classNames(qa.answer && qa.answer.includes(i) && "checked")}
                             >
                               <CheckIcon />
                             </div>
@@ -107,28 +130,56 @@ export default function ExamView(props: IViewProps){
                     </tbody>
                   </table>
                 )}
+                <div
+                  className={classNames(
+                    classes.answerResultImage,
+                    answerResult === null && "hide",
+                    answerResult === "correct" && "correct",
+                    answerResult === "no" && "no",
+                  )}
+                >
+                  {answerResult === "correct" ? <CorrectIcon /> : (answerResult === "no" ? <NoIcon /> : null)}
+                </div>
+              </div>
+              <div className={classNames(classes.answerResult, answerResult === null && "hide")}>
+                <div>
+                  {answerResult === "correct" && (
+                    <div className={classes.correct}>
+                      正解!
+                    </div>
+                  )}
+                  {answerResult === "no" && (
+                    <div className={classes.no}>
+                      間違い
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <ol>
+                    {qa.wordMeans.map((m, i) => {
+                      return (
+                        <li
+                          key={`${qa.word}-${m.mean}-${i}`}
+                        >
+                          {m.mean}
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
               </div>
             </div>
           </Scrollbars>
           <div className={classes.footer}>
-            <div
-              className={classes.toPrev}
-              onClick={onClickPrevious}
-            >
-              前へ
-            </div>
-            <div
-              className={classes.toNext}
-              onClick={onClickNext}
-            >
-              次へ
-            </div>
-            <div
-              className={classes.completeButtonContainer}
-              onClick={onClickComplete}
-            >
-              採点する
-            </div>
+            {answerResult !== null && (nAnswered < qaList.length ? (
+              <div className={classes.footerButton} onClick={onClickNext}>
+                <NextIcon /> 次の英単語へ
+              </div>
+            ) : (
+              <div className={classes.footerButton} onClick={onClickComplete}>
+                <CompleteIcon /> 完了する
+              </div>
+            ))}
           </div>
         </div>
       </div>

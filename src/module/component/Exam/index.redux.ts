@@ -5,10 +5,12 @@ import {RootState} from "../../../state";
 export default connect(
   (rootReduxState: RootState) => {
     const {lang} = rootReduxState.App;
-    const {wordList} = rootReduxState.Eowp;
+    const {wordList, nChoices, nQuestionsInExam} = rootReduxState.Eowp;
     return {
       lang,
       wordList,
+      nChoices,
+      nQuestionsInExam,
     };
   },
   dispatch => {

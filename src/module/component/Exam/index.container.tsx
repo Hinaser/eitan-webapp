@@ -1,7 +1,8 @@
 import * as React from "react";
 import memoizeOne from "memoize-one";
 import {IContainerProps, IContainerState, IViewProps} from "./index.type";
-import {generateQuestionList} from "../../../lib/eowp/index";
+import {generateQuestionList} from "../../../lib/eowp";
+import {checkAnswer} from "./index.lib";
 
 const getStyleForHistoryContainer = memoizeOne((width: number, height: number) => {
   return {
@@ -25,18 +26,18 @@ class ExamContainer extends React.Component<IContainerProps, IContainerState> {
     
     this.onClickAnswer = this.onClickAnswer.bind(this);
     this.onClickNext = this.onClickNext.bind(this);
-    this.onClickPrevious = this.onClickPrevious.bind(this);
     this.onClickQuestion = this.onClickQuestion.bind(this);
-    this.onClickComplete = this.onClickComplete.bind(this);
     this.onClickToHome = this.onClickToHome.bind(this);
+    this.onClickComplete = this.onClickComplete.bind(this);
     
-    const ql = generateQuestionList(props.wordList).map(q => ({...q, answer: null}));
+    const ql = generateQuestionList(props.wordList, props.nChoices, props.nQuestionsInExam)
+      .map(q => ({...q, answer: null}));
     
     this.state = {
       qaList: ql,
       currentQa: ql.length > 0 ? 0 : null,
-      selectedAnswerIndexes: null,
       readList: ql.length > 0 ? [0] : [],
+      answerResult: null,
     };
   }
   
@@ -66,10 +67,9 @@ class ExamContainer extends React.Component<IContainerProps, IContainerState> {
         styleForQuestionContainer={styleForQuestionContainer}
         onClickAnswer={this.onClickAnswer}
         onClickNext={this.onClickNext}
-        onClickPrevious={this.onClickPrevious}
         onClickQuestion={this.onClickQuestion}
-        onClickComplete={this.onClickComplete}
         onClickToHome={this.onClickToHome}
+        onClickComplete={this.onClickComplete}
       />
     );
   }
@@ -77,79 +77,51 @@ class ExamContainer extends React.Component<IContainerProps, IContainerState> {
   public onClickAnswer(e: React.MouseEvent<HTMLElement>){
     const indexStr = e.currentTarget.dataset.index as string;
     const index = +indexStr;
-    const {selectedAnswerIndexes, qaList, currentQa} = this.state;
+    const {qaList, currentQa, readList} = this.state;
     
-    if(!selectedAnswerIndexes){
-      return this.setState({
-        qaList: qaList.map((q, i2) => {
-          if(i2 === currentQa){
-            return {...q, answer: [index]};
-          }
-          return q;
-        }),
-        selectedAnswerIndexes: [index],
-      });
+    if(currentQa === null || !qaList[currentQa]){
+      return;
     }
     
-    const i = selectedAnswerIndexes.findIndex(ai => ai === index);
-    if(i < 0){
-      const nextSelectedAnswerIndexes = [...selectedAnswerIndexes, index];
-      
-      return this.setState({
-        qaList: qaList.map((q, i2) => {
-          if(i2 === currentQa){
-            return {...q, answer: nextSelectedAnswerIndexes};
-          }
-          return q;
-        }),
-        selectedAnswerIndexes: nextSelectedAnswerIndexes,
-      });
+    const qa = qaList[currentQa];
+    // Already answered question cannot be re-answered
+    if(qa.answer !== null && qa.answer.length > 0){
+      return;
     }
     
-    const nextSelectedAnswerIndexes = selectedAnswerIndexes.filter(ai => ai !== index);
+    const answer = [index];
+    
+    const nextQaList = qaList.map((q, i2) => {
+      if(i2 === currentQa){
+        return {...q, answer};
+      }
+      return q;
+    });
+    
+    const answerResult = checkAnswer(qa, answer);
+    
     return this.setState({
-      qaList: qaList.map((q, i2) => {
-        if(i2 === currentQa){
-          return {...q, answer: nextSelectedAnswerIndexes};
-        }
-        return q;
-      }),
-      selectedAnswerIndexes: nextSelectedAnswerIndexes,
+      qaList: nextQaList,
+      answerResult,
+      readList: readList.includes(currentQa) ? readList : readList.concat(currentQa),
     });
   }
   
   public onClickNext(e: React.MouseEvent<HTMLElement>){
-    const {currentQa, qaList, readList} = this.state;
-    if(currentQa === null || currentQa >= qaList.length - 1){
+    const {currentQa, readList, qaList} = this.state;
+    if(currentQa === null || currentQa >= qaList.length-1){
       return;
     }
     
-    const nextQa = currentQa + 1;
-    
     this.setState({
-      currentQa: nextQa,
-      selectedAnswerIndexes: qaList[nextQa].answer,
-      readList: readList.includes(nextQa) ? readList : [...readList, nextQa],
-    });
-  }
-  
-  public onClickPrevious(e: React.MouseEvent<HTMLElement>){
-    const {currentQa, qaList, readList} = this.state;
-    if(currentQa === null || currentQa <= 0){
-      return;
-    }
-  
-    const prevQa = currentQa - 1;
-  
-    this.setState({
-      currentQa: prevQa,
-      selectedAnswerIndexes: qaList[prevQa].answer,
-      readList: readList.includes(prevQa) ? readList : [...readList, prevQa],
+      currentQa: currentQa + 1,
+      answerResult: null,
+      readList: readList.includes(currentQa) ? readList : readList.concat(currentQa),
     });
   }
   
   public onClickQuestion(e: React.MouseEvent<HTMLElement>){
-    const {qaList, readList} = this.state;
+    const {readList, qaList} = this.state;
     const indexStr = e.currentTarget.dataset.index as string;
     const index = +indexStr;
     
@@ -157,18 +129,22 @@ class ExamContainer extends React.Component<IContainerProps, IContainerState> {
       return;
     }
     
+    const qa = qaList[index];
+    const answerResult = checkAnswer(qa, qa.answer);
+    
     this.setState({
       currentQa: index,
-      selectedAnswerIndexes: qaList[index].answer,
+      answerResult,
     });
-  }
-  
-  public onClickComplete(e: React.MouseEvent<HTMLElement>){
   }
   
   public onClickToHome(e: React.MouseEvent<HTMLElement>){
     const {history} = this.props;
     history.push("/");
+  }
+  
+  public onClickComplete(e: React.MouseEvent<HTMLElement>){
+    
   }
 }
 

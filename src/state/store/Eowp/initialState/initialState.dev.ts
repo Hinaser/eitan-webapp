@@ -8,5 +8,7 @@ export function getInitialState(): EowpState {
     examHistory: [],
     resultHistory: [],
     qaTrend: [],
+    nQuestionsInExam: 10,
+    nChoices: 5,
   };
 }

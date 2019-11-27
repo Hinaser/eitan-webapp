@@ -7,7 +7,7 @@ export function loadingData(){
   };
 }
 
-export function loadData(data: EowpState){
+export function loadData(data: Partial<EowpState>){
   return {
     type: LOAD_DATA,
     payload: {data},

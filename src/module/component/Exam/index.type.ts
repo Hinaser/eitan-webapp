@@ -10,8 +10,8 @@ type ClassKeys = keyof ReturnType<typeof Style>;
 export interface IContainerState {
   qaList: TExam["qa"];
   currentQa: number|null;
-  selectedAnswerIndexes: number[]|null;
   readList: number[];
+  answerResult: "correct"|"no"|null;
 }
 
 export interface IViewProps extends WithStyleAndI18nProps<ClassKeys>, IContainerState {
@@ -19,13 +19,14 @@ export interface IViewProps extends WithStyleAndI18nProps<ClassKeys>, IContainer
   styleForQuestionContainer: {width: number, height: number};
   onClickAnswer: (e: React.MouseEvent<HTMLElement>) => void;
   onClickNext: (e: React.MouseEvent<HTMLElement>) => void;
-  onClickPrevious: (e: React.MouseEvent<HTMLElement>) => void;
   onClickQuestion: (e: React.MouseEvent<HTMLElement>) => void;
-  onClickComplete: (e: React.MouseEvent<HTMLElement>) => void;
   onClickToHome: (e: React.MouseEvent<HTMLElement>) => void;
+  onClickComplete: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export interface IContainerProps extends WithStyleAndI18nProps<ClassKeys>, WithContentSizeProps, RouteComponentProps {
   wordList: TWord[];
+  nChoices: number;
+  nQuestionsInExam: number;
   view: React.ComponentType<IViewProps>;
 }
