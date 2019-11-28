@@ -92,7 +92,10 @@ export default function ExamView(props: IViewProps){
           >
             <div className={classes.question}>
               <div className={classes.word}>
-                {qa && qa.word}
+                {qa.word}
+              </div>
+              <div className={classes.pronounce}>
+                [{qa.pronounce}]
               </div>
               <div className={classes.statement}>
                 この単語の意味を下記より1つ選びなさい。

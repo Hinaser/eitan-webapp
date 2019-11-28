@@ -99,6 +99,10 @@ export default (theme: AppTheme) => ({
     fontSize: "2rem",
     fontWeight: "bold" as const,
   },
+  pronounce: {
+    fontSize: ".9rem",
+    color: "rgba(33,33,33,.6)",
+  },
   statement: {
     fontSize: ".8rem",
     marginTop: 8,

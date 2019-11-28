@@ -6,6 +6,7 @@ export type TWordMean = {
 export type TWord = {
   word: string;
   wordMeans: TWordMean[];
+  pronounce: string;
 };
 
 export type TQuestion = TWord & {
@@ -69,10 +70,14 @@ export function generateWordList(){
         };
       });
     }).flat();
+    
+    const pronounceEl = meansRow.querySelector<HTMLElement>("span.attr > span.pron");
+    const pronounce = pronounceEl ? pronounceEl.innerText.replace(/、$/, "") : "";
   
     const Word = {
       word,
       wordMeans,
+      pronounce,
     };
   
     WordList.push(Word);
