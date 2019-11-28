@@ -1,7 +1,7 @@
 import * as React from "react";
 import memoizeOne from "memoize-one";
 import {IContainerProps, IContainerState, IViewProps} from "./index.type";
-import {generateQuestionList} from "../../../lib/eowp";
+import {generateQuestionList, TExamResult, TQATrend} from "../../../lib/eowp";
 import {checkAnswer} from "./index.lib";
 
 const getStyleForHistoryContainer = memoizeOne((width: number, height: number) => {
@@ -143,8 +143,31 @@ class ExamContainer extends React.Component<IContainerProps, IContainerState> {
     history.push("/");
   }
   
-  public onClickComplete(e: React.MouseEvent<HTMLElement>){
+  public async onClickComplete(e: React.MouseEvent<HTMLElement>){
+    const {onExamFinish, history} = this.props;
+    const {qaList} = this.state;
+    const d = new Date();
+    const date = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
     
+    const examResult: TExamResult = {
+      maxScore: qaList.length,
+      score: qaList.filter(q => checkAnswer(q, q.answer) === "correct").length,
+      date: d.getTime(),
+      ymd: date,
+      exam: qaList,
+    };
+    
+    const qaTrend: TQATrend = {};
+    qaList.forEach(q => {
+      qaTrend[q.word] = [{
+        ymd: date,
+        date: d.getTime(),
+        result: checkAnswer(q, q.answer) === "correct" ? 1 : 0,
+      }];
+    });
+  
+    await onExamFinish(examResult, qaTrend);
+    history.push("/");
   }
 }
 

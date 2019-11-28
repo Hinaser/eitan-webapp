@@ -1,5 +1,5 @@
 // DO NOT FORGET TO INCREMENT VERSION BELOW when you modify the state definition.
-import {TExam, TExamResult, TQATrend, TWord} from "../../../../lib/eowp/index";
+import {TExamResult, TQATrend, TWord} from "../../../../lib/eowp";
 
 export const currentVersion = 0;
 
@@ -7,9 +7,8 @@ export type EowpState = {
   version: number;
   loading: boolean;
   wordList: TWord[];
-  examHistory: TExam[];
   resultHistory: TExamResult[];
-  qaTrend: TQATrend[];
+  qaTrend: TQATrend;
   nQuestionsInExam: number;
   nChoices: number,
 };

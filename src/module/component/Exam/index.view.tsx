@@ -95,7 +95,7 @@ export default function ExamView(props: IViewProps){
                 {qa.word}
               </div>
               <div className={classes.pronounce}>
-                [{qa.pronounce}]
+                {qa.pronounce && `[${qa.pronounce}]`}
               </div>
               <div className={classes.statement}>
                 この単語の意味を下記より1つ選びなさい。

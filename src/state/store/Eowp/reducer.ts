@@ -4,7 +4,7 @@ import {Reducer} from "redux";
 import * as EowpActionsBase from "./action";
 import {EowpState} from "./initialState/index.type";
 import {getInitialState} from "./initialState/index";
-import {LOADING_DATA, LOAD_DATA} from "./action/index.type";
+import {LOADING_DATA, LOAD_DATA, FINISH_EXAM} from "./action/index.type";
 
 export type EowpActions = CreatorsToActions<typeof EowpActionsBase>;
 type R = Reducer<EowpState, EowpActions>;
@@ -30,6 +30,15 @@ const eowpReducer: R = (state = getInitialState(), action) => {
         ...state,
         ...data,
         loading: false,
+      };
+    }
+    case FINISH_EXAM: {
+      const {examResults, qaTrend} = action.payload;
+      
+      return {
+        ...state,
+        resultHistory: examResults,
+        qaTrend,
       };
     }
     default:

@@ -1,6 +1,6 @@
 import {TExam} from "../../../lib/eowp";
 
-export function checkAnswer(qa: TExam["qa"] extends Array<infer T> ? T : never, answer: number[]|null){
+export function checkAnswer(qa: TExam extends Array<infer T> ? T : never, answer: number[]|null){
   if(answer === null){
     return null;
   }

@@ -17,20 +17,20 @@ export type TAnswer = {
   answer: number[]|null;
 };
 
-export type TExam = {
-  qa: Array<TQuestion & TAnswer>;
-};
+export type TExam = Array<TQuestion & TAnswer>;
 
 export type TExamResult = {
-  overall: number;
+  maxScore: number;
   score: number;
   date: number;
+  ymd: number;
   exam: TExam;
 };
 
 export type TQATrend = {
   [word: string]: Array<{
     ymd: number;
+    date: number;
     result: number; // 0: failure, 1: passed
   }>;
 };
@@ -151,15 +151,6 @@ export async function loadEowpDataFromLocalStorage(){
     }
   })();
   
-  const examHistory = (()=>{
-    try{
-      return JSON.parse(localStorage.getItem("examHistory") as string) || [] as TExam[];
-    }
-    catch(e){
-      return undefined;
-    }
-  })();
-  
   const resultHistory = (()=>{
     try{
       return JSON.parse(localStorage.getItem("resultHistory") as string) || [] as TExamResult[];
@@ -202,7 +193,6 @@ export async function loadEowpDataFromLocalStorage(){
     version: 0,
     loading: false,
     wordList,
-    examHistory,
     resultHistory,
     qaTrend,
     nChoices,

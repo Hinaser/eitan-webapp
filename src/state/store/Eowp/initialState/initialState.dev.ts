@@ -5,9 +5,8 @@ export function getInitialState(): EowpState {
     version: currentVersion,
     loading: false,
     wordList: [],
-    examHistory: [],
     resultHistory: [],
-    qaTrend: [],
+    qaTrend: {},
     nQuestionsInExam: 10,
     nChoices: 5,
   };
