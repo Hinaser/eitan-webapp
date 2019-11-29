@@ -1,9 +1,9 @@
 import general from "./general";
 import route from "./route";
-import auth from "./auth";
+import eowp from "./eowp";
 
 export default {
   general,
   route,
-  auth,
+  eowp,
 };

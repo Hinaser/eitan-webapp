@@ -1,7 +1,7 @@
 import {ThunkDispatch} from "redux-thunk";
 import {TExamResult, TQATrend} from "../../../../lib/eowp";
 import {EowpState} from "../initialState/index.type";
-import {finishExam} from "./index";
+import {finishExam} from "./";
 import {RootState} from "../../../index";
 
 export function finishExamAsync(examResult: TExamResult, qaTrend: TQATrend){
@@ -18,10 +18,10 @@ export function finishExamAsync(examResult: TExamResult, qaTrend: TQATrend){
     const {resultHistory, qaTrend: savedTrend} = eowpState;
     
     const newResultHistory = resultHistory.concat(examResult);
-    const newQaTrend: TQATrend = {};
+    const newQaTrend: TQATrend = {...savedTrend};
     Object.keys(qaTrend).forEach(word => {
-      if(savedTrend[word]){
-        newQaTrend[word] = savedTrend[word].concat(qaTrend[word]);
+      if(newQaTrend[word]){
+        newQaTrend[word] = newQaTrend[word].concat(qaTrend[word]);
       }
       else{
         newQaTrend[word] = qaTrend[word];
@@ -32,6 +32,6 @@ export function finishExamAsync(examResult: TExamResult, qaTrend: TQATrend){
     localStorage.setItem("resultHistory", JSON.stringify(newResultHistory));
     localStorage.setItem("qaTrend", JSON.stringify(newQaTrend));
     
-    finishExam(newResultHistory, newQaTrend);
+    dispatch(finishExam(newResultHistory, newQaTrend));
   };
 }

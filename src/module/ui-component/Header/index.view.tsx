@@ -11,8 +11,8 @@ export default function HomeView(props: IViewProps){
         <HeaderIcon />
       </div>
       <div className={classes.titleContainer}>
-        <div className={classes.title}>英単語テストアプリ</div>
-        <div className={classes.version}>v0.0.1</div>
+        <div className={classes.title}>英単語復習アプリ</div>
+        <div className={classes.version}>v{process.env.REACT_APP_VERSION}</div>
       </div>
       <div className={classes.storedWordsContainer}>
         登録済み単語数: {wordList.length}単語

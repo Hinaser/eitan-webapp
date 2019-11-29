@@ -38,4 +38,39 @@ export default (theme: AppTheme) => ({
     height: 30,
     lineHeight: "30px",
   },
+  summaryContainer: {
+    marginTop: 48,
+    display: "flex" as const,
+    flexWrap: "nowrap" as const,
+    justifyContent: "center",
+  },
+  summaryTitle: {
+    fontSize: ".9rem",
+    marginBottom: 8,
+  },
+  summaryTable: {
+    borderCollapse: "collapse" as const,
+    "& > tbody > tr > td": {
+      paddingTop: 4,
+      paddingBottom: 4,
+      "&:not(:first-child)": {
+        paddingLeft: 16,
+      },
+    },
+  },
+  stats: {
+    fontSize: ".9rem",
+  },
+  troublingWords: {
+    marginLeft: 32,
+    fontSize: ".9rem",
+  },
+  troublingWordsTable: {
+    borderCollapse: "collapse" as const,
+    "& > tbody > tr > td": {
+      "&:not(:first-child)": {
+        paddingLeft: 8,
+      },
+    },
+  },
 });

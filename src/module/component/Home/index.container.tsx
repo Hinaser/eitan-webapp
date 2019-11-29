@@ -1,5 +1,6 @@
 import * as React from "react";
 import {IContainerProps, IContainerState, IViewProps} from "./index.type";
+import {summarizeStats} from "../../../lib/eowp";
 
 class HomeContainer extends React.Component<IContainerProps, IContainerState> {
   public constructor(props: IContainerProps){
@@ -12,13 +13,21 @@ class HomeContainer extends React.Component<IContainerProps, IContainerState> {
   }
   
   public render(){
-    const {view: Component} = this.props;
+    const {
+      wordList,
+      resultHistory,
+      qaTrend,
+      view: Component,
+    } = this.props;
 
+    const summary = summarizeStats(wordList, resultHistory, qaTrend);
+    
     return (
       <Component
         {...this.props}
         {...this.state}
         onClickMenu={this.onClickMenu}
+        summary={summary}
       />
     );
   }

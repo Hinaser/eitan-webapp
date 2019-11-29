@@ -42,7 +42,7 @@ export default function ExamView(props: IViewProps){
         </div>
         <div className={classes.titleContainer}>
           <div className={classes.title}>英単語復習アプリ</div>
-          <div className={classes.version}>v0.0.1</div>
+          <div className={classes.version}>v{process.env.REACT_APP_VERSION}</div>
         </div>
         <div className={classes.examSummaryContainer}>
           <div>
@@ -57,7 +57,7 @@ export default function ExamView(props: IViewProps){
         </div>
         <div className={classes.backToHome}>
           <div onClick={onClickToHome}>
-            ホームへ戻る
+            やめる
           </div>
         </div>
       </div>
