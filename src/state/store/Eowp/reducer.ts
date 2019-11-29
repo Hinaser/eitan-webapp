@@ -4,7 +4,7 @@ import {Reducer} from "redux";
 import * as EowpActionsBase from "./action";
 import {EowpState} from "./initialState/index.type";
 import {getInitialState} from "./initialState/index";
-import {LOADING_DATA, LOAD_DATA, FINISH_EXAM} from "./action/index.type";
+import {LOADING_DATA, LOAD_DATA, FINISH_EXAM, CHANGE_NCHOICES, CHANGE_NQUESTIONS_IN_EXAM} from "./action/index.type";
 
 export type EowpActions = CreatorsToActions<typeof EowpActionsBase>;
 type R = Reducer<EowpState, EowpActions>;
@@ -39,6 +39,22 @@ const eowpReducer: R = (state = getInitialState(), action) => {
         ...state,
         resultHistory: examResults,
         qaTrend,
+      };
+    }
+    case CHANGE_NCHOICES: {
+      const {nChoices} = action.payload;
+      
+      return {
+        ...state,
+        nChoices,
+      };
+    }
+    case CHANGE_NQUESTIONS_IN_EXAM: {
+      const {nQuestionsInExam} = action.payload;
+      
+      return {
+        ...state,
+        nQuestionsInExam,
       };
     }
     default:

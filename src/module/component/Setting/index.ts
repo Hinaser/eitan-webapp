@@ -1,5 +1,5 @@
 import {withStyles} from "@material-ui/styles";
-import {withRouter} from "react-router";
+import {withRouter} from "react-router-dom";
 import {withI18n} from "../../../i18n/context";
 import {purify} from "../../../service/purify/index";
 import {withContainer} from "./index.container";

@@ -6,6 +6,7 @@ export default (theme: AppTheme) => ({
     alignItems: "center" as const,
     height: 40,
     borderBottom: "1px solid #ccc",
+    position: "relative" as const,
   },
   iconContainer: {
     height: 40,
@@ -25,5 +26,22 @@ export default (theme: AppTheme) => ({
   storedWordsContainer: {
     marginLeft: 16,
     fontSize: ".9rem",
+  },
+  backToHome: {
+    position: "absolute" as const,
+    top: 0,
+    right: 8,
+    height: 39,
+    display: "flex" as const,
+    alignItems: "center" as const,
+    fontSize: ".8rem",
+    "& > div": {
+      cursor: "pointer",
+      padding: "4px 8px",
+      transition: "all ease .1s",
+      "&:hover": {
+        background: "rgba(77,77,77,.1)",
+      },
+    },
   },
 });

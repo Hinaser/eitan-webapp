@@ -1,7 +1,7 @@
 import {ThunkDispatch} from "redux-thunk";
 import {TExamResult, TQATrend} from "../../../../lib/eowp";
 import {EowpState} from "../initialState/index.type";
-import {finishExam} from "./";
+import {changeNChoices, changeNQuestionsInExam, finishExam} from "./";
 import {RootState} from "../../../index";
 
 export function finishExamAsync(examResult: TExamResult, qaTrend: TQATrend){
@@ -33,5 +33,37 @@ export function finishExamAsync(examResult: TExamResult, qaTrend: TQATrend){
     localStorage.setItem("qaTrend", JSON.stringify(newQaTrend));
     
     dispatch(finishExam(newResultHistory, newQaTrend));
+  };
+}
+
+export function changeNChoicesAsync(nChoices: number){
+  return async (
+    dispatch: ThunkDispatch<
+      EowpState,
+      undefined,
+      ReturnType<typeof changeNChoices>
+      >,
+    getState: () => RootState,
+  ) => {
+    // Save data to localStorage
+    localStorage.setItem("nChoices", JSON.stringify(nChoices));
+    
+    dispatch(changeNChoices(nChoices));
+  };
+}
+
+export function changeNQuestionsInExamAsync(nQuestionsInExam: number){
+  return async (
+    dispatch: ThunkDispatch<
+      EowpState,
+      undefined,
+      ReturnType<typeof changeNQuestionsInExam>
+      >,
+    getState: () => RootState,
+  ) => {
+    // Save data to localStorage
+    localStorage.setItem("nQuestionsInExam", JSON.stringify(nQuestionsInExam));
+    
+    dispatch(changeNQuestionsInExam(nQuestionsInExam));
   };
 }
