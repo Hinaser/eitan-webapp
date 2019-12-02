@@ -29,7 +29,7 @@ export default function HomeView(props: IViewProps){
           </div>
         </div>
   
-        <div className={classes.menu} onClick={onClickMenu} data-menu="wordList">
+        <div className={classes.menu} onClick={onClickMenu} data-menu="words">
           <div className={classes.menuImage}>
             <ListIcon />
           </div>

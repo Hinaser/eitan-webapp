@@ -8,4 +8,9 @@ export default {
   troublingWordsCount: "苦手な単語の数",
   top10TroublingWords: "苦手な単語トップ10",
   troublingWordTitle: "苦手な単語 → 今月2回以上誤答した単語",
+  sortOrder: {
+    noSort: "登録順",
+    alphabet: "アルファベット",
+    mostTroubling: "苦手",
+  },
 };
