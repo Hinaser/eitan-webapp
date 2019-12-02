@@ -7,8 +7,10 @@ import {RootActions} from "../../../state/store/index.action";
 export default connect(
   (rootReduxState: RootState) => {
     const {lang} = rootReduxState.App;
+    const {qaTrend} = rootReduxState.Eowp;
     return {
       lang,
+      qaTrend,
     };
   },
   (dispatch: ThunkDispatch<RootState, undefined, RootActions>) => {

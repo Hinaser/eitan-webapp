@@ -89,6 +89,8 @@ export default (theme: AppTheme) => ({
     },
   },
   wordTd: {
+    minWidth: 200,
+    paddingLeft: 32,
   },
   word: {
   },
