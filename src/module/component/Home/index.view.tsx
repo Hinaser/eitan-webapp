@@ -34,7 +34,7 @@ export default function HomeView(props: IViewProps){
             <ListIcon />
           </div>
           <div className={classes.menuTitle}>
-            単語一覧
+            登録済み単語一覧
           </div>
         </div>
   

@@ -23,6 +23,10 @@ export default (theme: AppTheme) => ({
       "& + div": {
         marginLeft: 8,
       },
+      "&[data-selected='true']": {
+        fontWeight: "bold" as const,
+        textDecoration: "underline" as const,
+      },
     },
   },
   pageSummaryContainer: {

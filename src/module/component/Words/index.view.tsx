@@ -38,7 +38,14 @@ export default function WordsView(props: IViewProps){
           </div>
           {[...new Array(maxPage)].map((_, i) => {
             return (
-              <div key={i} onClick={onChangePage} data-index={i}>{i+1}</div>
+              <div
+                key={i}
+                onClick={onChangePage}
+                data-index={i}
+                data-selected={i === pageIndex}
+              >
+                {i+1}
+              </div>
             );
           })}
           <div
@@ -87,7 +94,7 @@ export default function WordsView(props: IViewProps){
             onChange={onChangeSortType}
             value={sortType}
           >
-            {["alphabet","noSort","mostTroubling"].map(sortType => {
+            {["noSort","alphabet","mostTroubling"].map(sortType => {
               return (
                 <option key={sortType} value={sortType}>{t(`eowp:sortOrder.${sortType}`)}</option>
               );
