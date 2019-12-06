@@ -8,6 +8,7 @@ import {doPreRenderingTasks, initializeStore} from "./init";
 import App from "./module/App/index";
 import "./global.css";
 import {mountPointNodeId} from "./index.config";
+import {closeApp, onCloseApp} from "./index.lib";
 
 
 function renderMainApp(store: Store){
@@ -73,7 +74,11 @@ if(process.env.REACT_APP_ENV === "development"){
   (async () => await main())();
 }
 else{
-// @ts-ignore
-  window.loadApp = main;
+  // @ts-ignore
+  window.openEowpPlus = main;
+  // @ts-ignore
+  window.onCloseEowpPlus = onCloseApp;
+  // @ts-ignore
+  window.closeEowpPlus = closeApp;
 }
 

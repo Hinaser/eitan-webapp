@@ -1,6 +1,19 @@
 import {mountPointNodeId} from "./index.config";
 
-export function closeApp(){
+const onClose: Array<() => void> = [];
+
+export function onCloseApp(callback: () => void){
+  onClose.push(callback);
+}
+
+export function offCloseApp(callback: () => void){
+  const index = onClose.findIndex(cb => cb === callback);
+  if(index > -1){
+    onClose.splice(index, 1);
+  }
+}
+
+function closeDefault(){
   const nodeToMount = document.getElementById(mountPointNodeId);
   if(!nodeToMount){
     throw new Error("Mount point missing");
@@ -33,4 +46,15 @@ export function closeApp(){
     document.body.appendChild(showButtonDiv);
   };
   nodeToMount.addEventListener("transitionend", onTransitionEndMountPoint);
+}
+
+export function closeApp(){
+  if(onClose.length > 0){
+    for(let i=0;i<onClose.length;i++){
+      onClose[i]();
+    }
+  }
+  else{
+    closeDefault();
+  }
 }
