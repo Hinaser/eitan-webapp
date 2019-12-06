@@ -24,7 +24,7 @@ export const createTheme: CreateThemeType = () => {
     },
     customComponents: {
       appLoader: {
-        background: "#fff",
+        background: "transparent",
       },
       appOutline: {
         background: "#fff",
