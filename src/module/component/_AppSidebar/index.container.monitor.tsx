@@ -30,7 +30,7 @@ const getRootStyle = memoizeOne((
 
 
 class AppSidebarContainer extends React.PureComponent<IContainerForMonitorProps, IContainerState> {
-  public static readonly initialWidth: number = 280;
+  public static readonly initialWidth: number = 0;
   public static readonly collapsedWidth: number = 0;
   
   public constructor(props: IContainerForMonitorProps){
