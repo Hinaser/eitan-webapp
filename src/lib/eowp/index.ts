@@ -52,7 +52,7 @@ export function gatherAllWordMeans(WordList: TWord[]){
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 export function shuffleArray<T>(array: T[]): T[] {
-  let workingArray = [...array];
+  const workingArray = [...array];
   for (let i = workingArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];

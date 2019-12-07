@@ -61,131 +61,138 @@ export default function ExamView(props: IViewProps){
           </div>
         </div>
       </div>
-      <div className={classes.body}>
-        <div className={classes.historyContainer}>
-          <Scrollbars
-            style={styleForHistoryContainer}
-          >
-            <div className={classes.qaListContainer}>
-              {qaList.map((qa, i) => {
-                const answerResult = checkAnswer(qa, qa.answer);
-                return (
+      {qaList.length >= 10 ? (
+        <div className={classes.body}>
+          <div className={classes.historyContainer}>
+            <Scrollbars
+              style={styleForHistoryContainer}
+            >
+              <div className={classes.qaListContainer}>
+                {qaList.map((q, i) => {
+                  const checkAnswerResult = checkAnswer(q, q.answer);
+                  return (
+                    <div
+                      className={classNames(classes.qi, i === currentQa && "selected")}
+                      key={q.word}
+                      onClick={onClickQuestion}
+                      data-index={i}
+                      data-result={checkAnswerResult || ""}
+                    >
+                      {checkAnswerResult === "correct" ? <CorrectIcon /> : (checkAnswerResult === "no" ? <NoIcon /> : null)}
+                      {(i === currentQa || readList.includes(i)) ? q.word : "???"}
+                    </div>
+                  );
+                })}
+              </div>
+            </Scrollbars>
+          </div>
+          <div className={classes.separator} />
+          <div className={classes.questionContainer}>
+            <Scrollbars
+              style={styleForQuestionContainer}
+            >
+              <div className={classes.question}>
+                <div className={classes.word}>
+                  {qa.word}
+                </div>
+                <div className={classes.pronounce}>
+                  {qa.pronounce && `[${qa.pronounce}]`}
+                </div>
+                <div className={classes.statement}>
+                  この単語の意味を下記より1つ選びなさい。
+                </div>
+                <div className={classes.choiceContainer}>
+                  {qa && (
+                    <table className={classes.choiceTable}>
+                      <tbody>
+                      {qa.choices.map((c, i) => {
+                        return (
+                          <tr
+                            key={`${qa.word}-${c.mean}-${i}`}
+                            onClick={onClickAnswer}
+                            data-index={i}
+                            className={classNames(answerResult !== null && "answered")}
+                          >
+                            <td
+                              className={classes.check}
+                            >
+                              <div
+                                className={classNames(qa.answer && qa.answer.includes(i) && "checked")}
+                              >
+                                <CheckIcon />
+                              </div>
+                            </td>
+                            <td className={classes.choiceIndex}>
+                              {i+1}
+                            </td>
+                            <td className={classes.choice}>
+                              {c.mean}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      </tbody>
+                    </table>
+                  )}
                   <div
-                    className={classNames(classes.qi, i === currentQa && "selected")}
-                    key={qa.word}
-                    onClick={onClickQuestion}
-                    data-index={i}
-                    data-result={answerResult || ""}
+                    className={classNames(
+                      classes.answerResultImage,
+                      answerResult === null && "hide",
+                      answerResult === "correct" && "correct",
+                      answerResult === "no" && "no",
+                    )}
                   >
                     {answerResult === "correct" ? <CorrectIcon /> : (answerResult === "no" ? <NoIcon /> : null)}
-                    {(i === currentQa || readList.includes(i)) ? qa.word : "???"}
                   </div>
-                );
-              })}
-            </div>
-          </Scrollbars>
-        </div>
-        <div className={classes.separator} />
-        <div className={classes.questionContainer}>
-          <Scrollbars
-            style={styleForQuestionContainer}
-          >
-            <div className={classes.question}>
-              <div className={classes.word}>
-                {qa.word}
-              </div>
-              <div className={classes.pronounce}>
-                {qa.pronounce && `[${qa.pronounce}]`}
-              </div>
-              <div className={classes.statement}>
-                この単語の意味を下記より1つ選びなさい。
-              </div>
-              <div className={classes.choiceContainer}>
-                {qa && (
-                  <table className={classes.choiceTable}>
-                    <tbody>
-                    {qa.choices.map((c, i) => {
-                      return (
-                        <tr
-                          key={`${qa.word}-${c.mean}-${i}`}
-                          onClick={onClickAnswer}
-                          data-index={i}
-                          className={classNames(answerResult !== null && "answered")}
-                        >
-                          <td
-                            className={classes.check}
+                </div>
+                <div className={classNames(classes.answerResult, answerResult === null && "hide")}>
+                  <div>
+                    {answerResult === "correct" && (
+                      <div className={classes.correct}>
+                        正解!
+                      </div>
+                    )}
+                    {answerResult === "no" && (
+                      <div className={classes.no}>
+                        間違い
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <ol>
+                      {qa.wordMeans.map((m, i) => {
+                        return (
+                          <li
+                            key={`${qa.word}-${m.mean}-${i}`}
                           >
-                            <div
-                              className={classNames(qa.answer && qa.answer.includes(i) && "checked")}
-                            >
-                              <CheckIcon />
-                            </div>
-                          </td>
-                          <td className={classes.choiceIndex}>
-                            {i+1}
-                          </td>
-                          <td className={classes.choice}>
-                            {c.mean}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    </tbody>
-                  </table>
-                )}
-                <div
-                  className={classNames(
-                    classes.answerResultImage,
-                    answerResult === null && "hide",
-                    answerResult === "correct" && "correct",
-                    answerResult === "no" && "no",
-                  )}
-                >
-                  {answerResult === "correct" ? <CorrectIcon /> : (answerResult === "no" ? <NoIcon /> : null)}
+                            {m.mean}
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
                 </div>
               </div>
-              <div className={classNames(classes.answerResult, answerResult === null && "hide")}>
-                <div>
-                  {answerResult === "correct" && (
-                    <div className={classes.correct}>
-                      正解!
-                    </div>
-                  )}
-                  {answerResult === "no" && (
-                    <div className={classes.no}>
-                      間違い
-                    </div>
-                  )}
+            </Scrollbars>
+            <div className={classes.footer}>
+              {answerResult !== null && (nAnswered < qaList.length ? (
+                <div className={classes.footerButton} onClick={onClickNext}>
+                  <NextIcon /> 次の英単語へ
                 </div>
-                <div>
-                  <ol>
-                    {qa.wordMeans.map((m, i) => {
-                      return (
-                        <li
-                          key={`${qa.word}-${m.mean}-${i}`}
-                        >
-                          {m.mean}
-                        </li>
-                      );
-                    })}
-                  </ol>
+              ) : (
+                <div className={classes.footerButton} onClick={onClickComplete}>
+                  <CompleteIcon /> 完了する
                 </div>
-              </div>
+              ))}
             </div>
-          </Scrollbars>
-          <div className={classes.footer}>
-            {answerResult !== null && (nAnswered < qaList.length ? (
-              <div className={classes.footerButton} onClick={onClickNext}>
-                <NextIcon /> 次の英単語へ
-              </div>
-            ) : (
-              <div className={classes.footerButton} onClick={onClickComplete}>
-                <CompleteIcon /> 完了する
-              </div>
-            ))}
           </div>
         </div>
-      </div>
+
+      ) : (
+        <div className={classes.notEnoughWordlist}>
+          テストを開始するためには10個以上の単語を単語帳に登録する必要があります。
+        </div>
+      )}
     </div>
   );
 }

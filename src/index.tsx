@@ -71,7 +71,7 @@ async function main(){
 }
 
 if(process.env.REACT_APP_ENV === "development"){
-  (async () => await main())();
+  (() => main())();
 }
 else{
   // @ts-ignore

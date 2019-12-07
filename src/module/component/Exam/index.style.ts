@@ -52,6 +52,10 @@ export default (theme: AppTheme) => ({
       },
     },
   },
+  notEnoughWordlist: {
+    marginTop: 32,
+    textAlign: "center" as const,
+  },
   body: {
     marginTop: 16,
     minWidth: 300,
