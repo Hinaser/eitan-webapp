@@ -11,7 +11,7 @@ export default function HomeView(props: IViewProps){
         <HeaderIcon />
       </div>
       <div className={classes.titleContainer}>
-        <div className={classes.title}>英単語復習アプリ</div>
+        <div className={classes.title}>英単 単語帳復習アプリ</div>
         <div className={classes.version}>v{process.env.REACT_APP_VERSION}</div>
       </div>
       <div className={classes.storedWordsContainer}>
