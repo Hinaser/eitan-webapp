@@ -1,5 +1,5 @@
 import React from "react";
-import {FadeLoader} from "react-spinners";
+import {ScaleLoader} from "react-spinners";
 import {IViewProps} from "./AppLoader.type";
 
 
@@ -22,13 +22,13 @@ function AppLoaderView(props: IViewProps){
   return (
     <div className={classes.root}>
       <div>
-        <FadeLoader
-          height={15}
-          width={5}
-          margin="2px"
+        <ScaleLoader
+          height={35}
+          width={4}
           radius={2}
+          margin="2px"
           loading={true}
-          color="rgba(33,33,33,.7)"
+          color={"rgba(54,215,183,100)"}
         />
       </div>
     </div>

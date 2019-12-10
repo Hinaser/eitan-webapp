@@ -8,6 +8,7 @@ import {doPreRenderingTasks, initializeStore} from "./init";
 import App from "./module/App/index";
 import "./global.css";
 import {mountPointNodeId} from "./index.config";
+import {closeApp, onCloseApp} from "./index.lib";
 
 
 function renderMainApp(store: Store){
@@ -52,7 +53,7 @@ async function main(){
     whyDidYouRender(React, {include: [/.*View$/]});
   }
   
-  const {store} = initializeStore();
+  const {store} = await initializeStore();
   
   if(process.env.REACT_APP_ENV === "development"){
     const start = Date.now();
@@ -70,10 +71,14 @@ async function main(){
 }
 
 if(process.env.REACT_APP_ENV === "development"){
-  (async () => await main())();
+  (() => main())();
 }
 else{
-// @ts-ignore
-  window.loadApp = main;
+  // @ts-ignore
+  window.openEowpPlus = main;
+  // @ts-ignore
+  window.onCloseEowpPlus = onCloseApp;
+  // @ts-ignore
+  window.closeEowpPlus = closeApp;
 }
 

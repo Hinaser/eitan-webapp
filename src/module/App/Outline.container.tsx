@@ -130,8 +130,8 @@ class OutlineContainer extends React.PureComponent<IContainerProps, IContainerSt
     
     const mainContentPosition = getMainContentPosition(headerHeight, sidebarWidth, sidebarPosition, windowWidth);
     const scrollbarStyle = getScrollbarStyle(
-      contentWidth - mainContentPadding*2, 
-      contentHeight - mainContentPadding*2,
+      windowWidth - mainContentPosition.left - mainContentPosition.right, 
+      windowHeight - mainContentPosition.top - mainContentPosition.bottom,
     );
     
     return (

@@ -12,8 +12,14 @@ interface Theme {}
  */
 interface CustomProps {
   primaryForegroundColor: CSS.ColorProperty;
+  secondaryForegroundColor: CSS.ColorProperty;
   primaryBackgroundColor: CSS.BackgroundColorProperty;
+  secondaryBackgroundColor: CSS.BackgroundColorProperty;
   dialogClickListenerBackgroundColor: CSS.BackgroundColorProperty;
+  selectedBorderColor: CSS.BorderColorProperty;
+  successForegroundColor: CSS.ColorProperty;
+  errorForegroundColor: CSS.ColorProperty;
+  buttonBackgroundColor: CSS.BackgroundColorProperty;
 }
 
 interface CustomComponents {
